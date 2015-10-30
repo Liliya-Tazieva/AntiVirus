@@ -1,0 +1,7 @@
+class Triangle
+{
+int side_1_length;
+int side_2_length;
+int side_3_length;
+string type;
+}
