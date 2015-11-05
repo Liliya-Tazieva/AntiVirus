@@ -1,0 +1,5 @@
+Scan started at: c:\testhex
+Scanning directory: c:\testhex
+suspicious file found at: c:\testhex/11.txt
+the name of virus is: Eicar-Test-Signature
+scanner_quit.
