@@ -16,7 +16,9 @@ SOURCES += main.cpp\
         widget.cpp \
     window.cpp
 
-HEADERS  += widget.h \
-    window.h
+HEADERS  += \
+    widget.h \
+    window.h \
+    pmavmodules.h
 
-FORMS    += widget.ui
+FORMS    += widget.ui \

@@ -1,6 +1,5 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-
 #include <QWidget>
 #include <QLineEdit>
 #include "window.h"
@@ -9,6 +8,12 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QLabel>
+#include "pmavmodules.h"
+
+
+
+
+
 class Window : public QWidget
 {
     Q_OBJECT
@@ -27,9 +32,19 @@ public:
     QHBoxLayout *layout3;
     QVBoxLayout *layout4;
     QString s;
+    Antivirus* antivirus;
+    QLabel *SW;
+    QTimer *timer;
+    QLabel *waiting_window;
     //Initializing signals and slots, to make buttons do stuff
 signals:
     void signal1(bool);
+private slots:
+    void wait_window1();
+    void wait_window2();
+    void close_the_window();
+    void close_waiting_window1();
+    void close_waiting_window2();
 public slots:
     void scan_all();
     void scan_dir();
