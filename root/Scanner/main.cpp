@@ -158,15 +158,36 @@ public:
                     k++;
 
                  }
+
                 for(long i=0;i<databaseLength;i++){
-                    if (buf2.find(database[i]) != std::string::npos) {
+                    bool containsAt0=true;
+                    long elementLength=database[i].length();
+                    long ii=0;
+                    while((40000>ii)&&(elementLength>ii)){
+                        if(buf2[ii]!=database[i][ii])
+                            containsAt0=false;
+                        ii++;
+                    }
+                    if(containsAt0){
+                        qDebug()<<"Virus found!";
+                        logger->writeToLog("suspicious file found at: ");
+                        logger->writelnToLog(s);
+                        logger->writeToLog("the name of virus is: ");
+                        logger->writelnToLog(namebase[i]);
+                        callVirusFoundWindow(s,namebase[i]);
+                    }
+
+
+
+
+                    /*if (buf2.find(database[i]) != std::string::npos) {
                          qDebug()<<"Virus found!";
                          logger->writeToLog("suspicious file found at: ");
                          logger->writelnToLog(s);
                          logger->writeToLog("the name of virus is: ");
                          logger->writelnToLog(namebase[i]);
                          callVirusFoundWindow();
-                    }
+                    }*/
                    // qDebug()<<"------";
                    // qDebug()<<QString::fromStdString(database[i]);
                    // qDebug()<<QString::fromStdString(buf2).left(220);
@@ -272,7 +293,7 @@ public:
 
 
 
-    void callVirusFoundWindow() {
+    void callVirusFoundWindow(std::string adress, std::string name) {
         //QProcess process;
        // process.start( "C:/Qt/VirusDetected/WhatToDoWithVirus.exe" );
        // if( !process.waitForStarted() ) {
@@ -290,8 +311,9 @@ public:
         //qDebug() << process.readAllStandardOutput();
         QProcess *process = new QProcess();
         QString program = "WhatToDoWithVirus.exe";
-        QString arg = "av";
-        process->start(program, QStringList() << arg);
+        QString arg1 = QString::fromStdString(adress);
+        QString arg2 = QString::fromStdString(name);
+        process->start(program, QStringList() << arg1<<arg2);
 
     }
 

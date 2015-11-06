@@ -71,6 +71,13 @@ Window::Window(QWidget *parent) : QWidget(parent)
  {
      s = line->text();
 
+     scanall->setEnabled(false);
+     scanall->repaint();
+     scanit->setEnabled(false);
+     scanit->repaint();
+     line->setEnabled(false);
+     line->repaint();
+
      QProcess *process = new QProcess();
      QString program = "Scanner.exe";
      process->start(program, QStringList() << s);
@@ -85,7 +92,20 @@ Window::Window(QWidget *parent) : QWidget(parent)
 void Window::scan_all()//actually, not all. just a root path.
 {
 
+    scanall->setEnabled(false);
+    scanall->repaint();
+    scanit->setEnabled(false);
+    scanit->repaint();
+    line->setEnabled(false);
+    line->repaint();
+
     s=QDir::rootPath();
+    QString f="Windows";
+
+    std::string s0 = QSysInfo::prettyProductName().toStdString();
+    if (s0 == "Windows 8" || s0 == "Windows 8.1"||s0 == "Windows 10")
+        s.append(f);
+   // qDebug()<<s;
 
     QProcess *process = new QProcess();
     QString program = "Scanner.exe";
