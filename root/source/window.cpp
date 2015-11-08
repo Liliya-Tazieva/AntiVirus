@@ -4,7 +4,7 @@
 
 #include <sstream>
 #include <string>
-
+#include <QCryptographicHash>
 
 
 Window::Window(QWidget *parent) : QWidget(parent)
@@ -60,15 +60,31 @@ Window::Window(QWidget *parent) : QWidget(parent)
     setMinimumSize(650, 200);
     setLayout(layout4);
 
-
-
-    //Signal-slot connection
+   //Signal-slot connection
     connect(scanit,SIGNAL(clicked()),this,SLOT(scan_dir()),Qt::DirectConnection);
     connect(scanall,SIGNAL(clicked()),this,SLOT(scan_all()),Qt::DirectConnection);
     connect(passive_def,SIGNAL(toggled(bool)),this,SLOT(pass_def()),Qt::DirectConnection);
 }
+
+void Window::on_scanner_finished(int x0, QProcess::ExitStatus x1){
+    scanall->setEnabled(true);
+    scanall->repaint();
+    scanit->setEnabled(true);
+    scanit->repaint();
+    line->setEnabled(true);
+    line->repaint();
+    QLabel *indicator_scanner_finished = new QLabel("Scanning is finished!");
+    QFont FontKind2("Calibri",36);
+    indicator_scanner_finished->setFont(FontKind2);
+    indicator_scanner_finished->show();
+}
+
  void Window::scan_dir()
  {
+    // connect(process, SIGNAL(finished(int , QProcess::ExitStatus )), this, SLOT(on_scanner_finished(int , QProcess::ExitStatus )));
+     //connect(process, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
+     //    [=](int exitCode, QProcess::ExitStatus exitStatus){ /* ... */ });
+
      s = line->text();
 
      scanall->setEnabled(false);
@@ -78,9 +94,14 @@ Window::Window(QWidget *parent) : QWidget(parent)
      line->setEnabled(false);
      line->repaint();
 
-     QProcess *process = new QProcess();
+     QString arg2="md5";
+
+     process = new QProcess();
+
+     connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(on_scanner_finished(int,QProcess::ExitStatus)));
+
      QString program = "Scanner.exe";
-     process->start(program, QStringList() << s);
+     process->start(program, QStringList() << s<<arg2);
 
 
 
@@ -107,9 +128,15 @@ void Window::scan_all()//actually, not all. just a root path.
         s.append(f);
    // qDebug()<<s;
 
-    QProcess *process = new QProcess();
+    QString arg2="md5";
+
+    process = new QProcess();
+
+    connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(on_scanner_finished(int,QProcess::ExitStatus)));
+
+
     QString program = "Scanner.exe";
-    process->start(program, QStringList() << s);
+    process->start(program, QStringList() << s<<arg2);
 
 
 

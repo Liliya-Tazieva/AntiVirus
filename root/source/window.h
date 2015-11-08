@@ -37,6 +37,7 @@ public:
     QHBoxLayout *layout3;
     QVBoxLayout *layout4;
     QString s;
+    QProcess *process;
 
     //not using antivirus class anymore: Antivirus* antivirus;
 
@@ -47,6 +48,7 @@ public slots:
     void scan_all();
     void scan_dir();
     void pass_def();
+    void on_scanner_finished(int x0, QProcess::ExitStatus x1);
 };
 
 #endif // WINDOW_H
