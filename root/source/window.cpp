@@ -31,7 +31,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
     scanit->setFont(font_kind2);
 
     //Passive-defence switch
-    passive_def = new QCheckBox ("Passive defenсe");
+    passive_def = new QCheckBox ("Real-time protection");
     passive_def->setFont(font_kind2);
 
     //"Scan all" button
@@ -146,31 +146,31 @@ void Window::scan_all()//actually, not all. just a root path.
     indicator2->setFont(FontKind2);
     indicator2->show();
 }
+void Window::on_rtp_finished(int x0, QProcess::ExitStatus x1){
+    passive_def->setChecked(false);
+    QLabel *indicator3 = new QLabel("Real-time protection is deactivated");
+    QFont FontKind3("Calibri",36);
+    indicator3->setFont(FontKind3);
+    indicator3->show();
+
+}
 void Window::pass_def()
 {
 
+
     if(passive_def->isChecked())
     {
-        bool t2=true;
-        //this->antivirus->passiveProtection->turnOnProtection();
-        //Нужно как-то передать булево значение экземпляру класса Пассивный защитник,
-        //который, в свою очередь нужно создать, так, чтобы Qt не ругался.
-        //И когда Защитник включится, появится окно, оповещающее о его активации
-        QLabel *indicator3 = new QLabel("Activate passive defence? Done!");
+        process_rtp = new QProcess();
+        connect(process_rtp, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(on_rtp_finished(int,QProcess::ExitStatus)));
+        QString program = "rtp_new.exe";
+
+        process_rtp->start(program, QStringList());
+        QLabel *indicator3 = new QLabel("Real-time protection is activated");
         QFont FontKind3("Calibri",36);
         indicator3->setFont(FontKind3);
         indicator3->show();
+    }else{
+        process_rtp->close();
     }
-    else
-    {
-        bool t2=false;
-        //this->antivirus->passiveProtection->turnOffProtection();
-        //Нужно как-то передать булево значение экземпляру класса Пассивный защитник,
-        //который, в свою очередь нужно создать, так, чтобы Qt не ругался.
-        //И когда Защитник выключится, появится окно, оповещающее о его деактивации
-        QLabel *indicator3 = new QLabel("Deactivate passive defence? Done!");
-        QFont FontKind3("Calibri",36);
-        indicator3->setFont(FontKind3);
-        indicator3->show();
-    }
+
 }
