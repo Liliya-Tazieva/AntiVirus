@@ -152,7 +152,7 @@ void QueryKey(HKEY hKey)//not used, it's just msdn example that is untouched
 //function creates list of add programms in directories
 QVector<QList<RegistryParameter>> Compare_r(QVector<QList<RegistryParameter>> c,QVector<QList<RegistryParameter>> m)
 {
-    for (int i=0;i<10;i++)
+    for (int i=0;i<12;i++)
     {
         int l=c[i].length();
         for(int jc=0;jc<l;jc++)
@@ -282,6 +282,21 @@ void ask_window::no()
                  qDebug()<<tt;
             }
             RegCloseKey(hKey);
+        }else  if(reserved_registry_parameter_changed_int<12){
+            if(reserved_registry_parameter_changed_int==10) temp="SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+            if(reserved_registry_parameter_changed_int==11) temp="SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce";
+            HKEY hKey;
+            int tt=RegOpenKeyExA(HKEY_CURRENT_USER,
+                                temp.c_str(),
+                                0,
+                                KEY_SET_VALUE,
+                                &hKey);
+            if (tt == ERROR_SUCCESS){
+              RegDeleteValueA(hKey,(LPCSTR)reserved_registry_parameter_changed.name.toLocal8Bit());
+            }else{
+                 qDebug()<<tt;
+            }
+            RegCloseKey(hKey);
         }
     }
 
@@ -394,7 +409,27 @@ void monitor_r(QVector<QList<RegistryParameter>> &List){
                 )
             QueryKeyA_r(hTestKey,&List[9]);
             RegCloseKey(hTestKey);
+
         }
+
+        if (RegOpenKeyEx(HKEY_CURRENT_USER,
+            TEXT("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"),
+            0,
+            KEY_READ,
+            &hTestKey) == ERROR_SUCCESS
+            )
+        QueryKeyA_r(hTestKey,&List[10]);
+        RegCloseKey(hTestKey);
+
+        if (RegOpenKeyEx(HKEY_CURRENT_USER,
+            TEXT("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce"),
+            0,
+            KEY_READ,
+            &hTestKey) == ERROR_SUCCESS
+            )
+        QueryKeyA_r(hTestKey,&List[11]);
+        RegCloseKey(hTestKey);
+
     }catch(std::exception e){
         qDebug()<<"Whoops";
     }
@@ -411,20 +446,20 @@ QString _regToString(RegistryParameter x){
 }
 void ask_window::invoke(){
     QVector<QList<RegistryParameter>> List_r;
-    for(int i=0;i<10;i++){
+    for(int i=0;i<12;i++){
        QList<RegistryParameter> q=QList<RegistryParameter>();
        List_r.push_back(q);
     }
 
     monitor_r(List_r);
     QVector<QList<RegistryParameter>> Difference_r=Compare_r(c_r,List_r);
-    /*for(int ii=0;ii<10;ii++){
+    /*for(int ii=0;ii<12;ii++){
         qDebug()<<ii;
         for(int ii0=0;ii0<List_r[ii].size();ii0++)
             qDebug()<<_regToString(List_r[ii].at(ii0));
     }*/
 
-    for(int ii=0;ii<10;ii++){
+    for(int ii=0;ii<12;ii++){
         if(Difference_r[ii].size()!=0)
          qDebug()<<ii;
         for(int ii0=0;ii0<Difference_r[ii].size();ii0++)
@@ -453,7 +488,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     ask_window w;
-    for(int i=0;i<10;i++){
+    for(int i=0;i<12;i++){
        QList<RegistryParameter> q=QList<RegistryParameter>();
        w.c_r.push_back(q);
     }
