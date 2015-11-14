@@ -46,7 +46,6 @@ public:
 signals:
     void box1_s1();
     void box1_s2();
-    void box1_s3();
     void box2_s1();
     void box2_s2();
 public slots:
@@ -54,7 +53,6 @@ public slots:
     void scan_dir();
     void pass_def();
     void low();
-    void medium();
     void high();
     void hex();
     void md5();

@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
     Window w;
     //Standard values for combo boxes
-    emit w.box1_s3();
+    emit w.box1_s2();
     emit w.box2_s2();
     //Moving it from the screen's up-left and then showing
     w.move(100, 100);

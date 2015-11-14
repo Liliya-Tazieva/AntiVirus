@@ -47,10 +47,9 @@ Window::Window(QWidget *parent) : QWidget(parent)
     box1 = new QComboBox;
     box2 = new QComboBox;
     box1->addItem("Low");
-    box1->addItem("Medium");
     box1->addItem("High");
     box1->setFont(font_kind1);
-    box1->setCurrentIndex(2);
+    box1->setCurrentIndex(1);
     box2->addItem("HEX");
     box2->addItem("MD5");
     box2->setFont(font_kind1);
@@ -92,8 +91,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
     connect(box1, SIGNAL(currentIndexChanged(QString)), this, SLOT(box1_change()), Qt::DirectConnection);
     connect(box2, SIGNAL(currentIndexChanged(QString)), this, SLOT(box2_change()), Qt::DirectConnection);
     connect(this, SIGNAL(box1_s1()),this, SLOT(low()), Qt::DirectConnection);
-    connect(this, SIGNAL(box1_s2()),this, SLOT(medium()), Qt::DirectConnection);
-    connect(this, SIGNAL(box1_s3()),this, SLOT(high()), Qt::DirectConnection);
+    connect(this, SIGNAL(box1_s2()),this, SLOT(high()), Qt::DirectConnection);
     connect(this, SIGNAL(box2_s1()),this, SLOT(hex()), Qt::DirectConnection);
     connect(this, SIGNAL(box2_s2()),this, SLOT(md5()), Qt::DirectConnection);
 }
@@ -214,8 +212,7 @@ void Window::box1_change()
     l->show();
     QString s = box1->currentText();
     if(s == "Low") emit box1_s1();
-    else if(s == "Medium") emit box1_s2();
-    else emit box1_s3();
+    else emit box1_s2();
 }
 
 void Window::box2_change()
@@ -229,14 +226,6 @@ void Window::box2_change()
 }
 
 void Window::low()
-{
-    QString s = box1->currentText();
-    QLabel *l= new QLabel(s);
-    l->move(1050,400);
-    l->show();
-}
-
-void Window::medium()
 {
     QString s = box1->currentText();
     QLabel *l= new QLabel(s);
