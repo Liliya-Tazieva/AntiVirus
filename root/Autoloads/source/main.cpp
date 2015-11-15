@@ -10,6 +10,9 @@
 #include <String>
 #include "Windows.h"
 #include <QDebug>
+#include <QFileSystemWatcher>
+#include <QDir>
+#include <QFile>
 
 using namespace std;
 
@@ -244,7 +247,44 @@ void QueryKeyA_r(HKEY hKey,QList<RegistryParameter>* l2)
 }
 
 void ask_window::no()
-{   if(mode=="registry_changed"){
+{
+    if(mode=="hosts_changed"){
+        qDebug()<<"doing something.";
+        QString s= QApplication::applicationDirPath().append("\\hosts.txt");
+        std::ifstream::pos_type size;
+        char * memblock;
+        std::ifstream file (s.toStdString(), std::ios::in|std::ios::binary|std::ios::ate);
+        if (file.is_open()){
+            size = file.tellg();
+            memblock = new char [size];
+            file.seekg (0, std::ios::beg);
+            file.read (memblock, size);
+            file.close();
+            //
+         }
+        else {
+            qDebug()<<"NOT FOUND";
+
+        }
+
+
+
+
+
+
+            s=QDir::rootPath();
+                s.append("Windows\\System32\\drivers\\etc\\hosts");
+            mon_hosts->removePath(s);
+            std::ofstream fout;
+            fout.open(s.toStdString());
+            fout <<memblock<< std::endl;
+            fout.close();
+            mon_hosts->addPath(s);
+
+            delete[] memblock;
+    }
+
+    if(mode=="registry_changed"){
         std::string temp;
         if(reserved_registry_parameter_changed_int<5){
             if(reserved_registry_parameter_changed_int==0) temp="SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -496,6 +536,48 @@ int main(int argc, char *argv[])
     monitor_r(w.c_r);
 
     w.activate();
+
+
+    QString s=QDir::rootPath();
+    std::string s0 = QSysInfo::prettyProductName().toStdString();
+        s.append("Windows\\System32\\drivers\\etc\\hosts");
+    w.mon_hosts = new QFileSystemWatcher;
+     w.mon_hosts->addPath(s);
+
+
+
+    std::ifstream::pos_type size;
+    char * memblock;
+    std::ifstream file (s.toStdString(), std::ios::in|std::ios::binary|std::ios::ate);
+    if (file.is_open()){
+        size = file.tellg();
+        memblock = new char [size];
+        file.seekg (0, std::ios::beg);
+        file.read (memblock, size);
+        file.close();
+        //
+     }
+    else {
+        qDebug()<<"NOT FOUND";
+
+    }
+
+     std::ofstream fout;
+     fout.open(QApplication::applicationDirPath().append("\\hosts.txt").toStdString());
+     fout <<memblock<< std::endl;
+     fout.close();
+
+    delete[] memblock;
+
+     a.connect( w.mon_hosts, SIGNAL(fileChanged(QString)), &w, SLOT(foo1(QString)));
+   /* std::ofstream fout;
+    fout.open(s.toStdString(), std::ios::app);
+    fout <<"#appended~~"<< std::endl;
+    fout.close();*/
+
+
+
+
 
     return a.exec();
 }

@@ -14,6 +14,8 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFileSystemWatcher>
+
 
 /*
 #include <QThread>
@@ -54,8 +56,13 @@ public:
     QString s1;
     QString s2;
     QString mode;
+
+    QFileSystemWatcher *mon_hosts;
+
     RegistryParameter reserved_registry_parameter_changed;
     int reserved_registry_parameter_changed_int;
+
+    bool reserved_dont_track_hosts=false;
     void activate();
 
 
@@ -65,6 +72,11 @@ public:
             s0="Attempt to add new program to autorun has been detected";
             s1=param;
             s2="Allow it?";
+        }
+        if(mode=="hosts_changed"){
+            s0="An attempt to change 'hosts' file was detected.";
+            s1="Do you want to allow the changes?";
+            s2="";
         }
         situation->setText(s0);
         something->setText(s1);
@@ -76,6 +88,13 @@ public slots:
     void invoke();
     void yes();
     void no();
+    void foo1(QString){
+
+            set_window(QString("hosts_changed"),QString(""));
+            show();
+            qDebug()<<"hosts_changed";
+
+    };
    /* void handleResults(const QString &);
 signals:
     void operate(const QString &);*/

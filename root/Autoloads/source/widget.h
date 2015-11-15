@@ -1,5 +1,6 @@
 #ifndef WIDGET_H
 #define WIDGET_H
+#include <QString>
 
 #include <QWidget>
 

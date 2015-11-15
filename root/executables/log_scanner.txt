@@ -1,8 +1,0 @@
-Signature base loaded. 
-md5 scanning algorithm.
-Scan started at: c:\testhex
-Scanning directory: c:\testhex
-suspicious file found at: c:\testhex/11.txt
-the name of virus is: virus
-the md5 hash of virus is: 44d88612fea8a8f36de82e1278abb02f
-scanner_quit.

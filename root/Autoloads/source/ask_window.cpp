@@ -1,6 +1,8 @@
 #include "ask_window.h"
 #include <QFont>
 #include <QDebug>
+#include <QDir>
+#include <QApplication>
 
 ask_window::ask_window(QWidget *parent) : QWidget(parent)
 {
@@ -71,6 +73,56 @@ void ask_window::yes()
 {
     if(mode=="registry_changed"){
         c_r[reserved_registry_parameter_changed_int].push_front(reserved_registry_parameter_changed);
+    }
+    if(mode=="hosts_changed"){
+
+
+
+
+        QString s=QDir::rootPath();
+            s.append("Windows\\System32\\drivers\\etc\\hosts");
+
+        std::ifstream::pos_type size;
+        char * memblock;
+        std::ifstream file (s.toStdString(), std::ios::in|std::ios::binary|std::ios::ate);
+        if (file.is_open()){
+            size = file.tellg();
+            memblock = new char [size];
+            file.seekg (0, std::ios::beg);
+            file.read (memblock, size);
+            file.close();
+            //
+         }
+        else {
+            qDebug()<<"NOT FOUND";
+
+        }
+
+         std::ofstream fout;
+         fout.open(QApplication::applicationDirPath().append("\\hosts.txt").toStdString());
+         fout <<memblock<< std::endl;
+         fout.close();
+
+        delete[] memblock;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        qDebug()<<"doing nothing.";
+
+
     }
      this->hide();
 }
