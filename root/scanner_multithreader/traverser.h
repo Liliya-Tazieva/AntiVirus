@@ -12,10 +12,10 @@ class Traverser:public QObject{
     Q_OBJECT
 public:
 
-    QList<std::string> privateList;
+    QList<QString> privateList;
     MainWindow* w;
-    void initTraversing(const char* s,MainWindow* w0){
-        w=w0;
+    void initTraversing(QString s,MainWindow* w0){
+        w=w0;        
         w->stack.push(s);
     }
 signals:
@@ -26,13 +26,15 @@ public slots:
         std::ofstream fout;
         fout.open("log_scanner.txt", std::ios::app);
             while (w->stack.size()!=0&&privateList.length()<100){
-                std::string st =  w->stack.top();
+                QString st =  w->stack.top();
                 fout <<"Scanning directory: ";
-                fout <<st<< std::endl;
+                fout <<st.toStdString()<< std::endl;
+
+                qDebug()<<st;
                  w->stack.pop();
-                QDir start(st.c_str());
+                QDir start(st);
                 start.setNameFilters(QStringList() << "*");
-                std::string currentString;
+                QString currentString;
                 if (!start.exists())
                 {
                    fout <<"error"<< std::endl;
@@ -43,7 +45,7 @@ public slots:
                     if (dir_list.at(i) != "."&&dir_list.at(i) != ".."){
                         currentString = st;
                         currentString.append("\\");
-                        currentString.append(dir_list.at(i).toStdString());
+                        currentString.append(dir_list.at(i));
                          w->stack.push(currentString);
                     }
                 }
@@ -52,7 +54,7 @@ public slots:
                 for (int i = 0; i < file_list.size(); ++i){
                     currentString = st;
                     currentString.append("\\");
-                    currentString.append(file_list.at(i).toStdString());
+                    currentString.append(file_list.at(i));
                     privateList.append(currentString);
 
                 }
@@ -69,7 +71,7 @@ public slots:
     void giveMore(){
         privateList.clear();
         if(!w->traverserFinished)continueTraversing();
-        w->filesToScan=QList<std::string>(privateList);
+        w->filesToScan=QList<QString>(privateList);
         emit listReady();
 
     }

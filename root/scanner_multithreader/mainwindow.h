@@ -22,8 +22,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     std::string scantype;
-    std::stack<std::string, std::list<std::string>> stack;
-    QList<std::string> filesToScan;
+    std::stack<QString, std::list<QString>> stack;
+    QList<QString> filesToScan;
 
     bool traverserFinished=false;
     int itc;
@@ -82,9 +82,9 @@ public slots:
         if(!filesToScan.isEmpty()){
             for(int i=0;i<itc;i++)
                if(!emitters[i].isWorking){
-                   std::string h=filesToScan.last();
+                   QString h=filesToScan.last();
                    filesToScan.removeLast();
-                    emitters[i].em(QString::fromStdString(h));
+                    emitters[i].em(h);
                     if(filesToScan.isEmpty())break;
                 }
 
@@ -98,6 +98,12 @@ public slots:
                     }
                 if(!work){
                     qDebug()<<"exit";
+
+                    std::ofstream fout;
+                    fout.open("log_scanner.txt", std::ios::app);
+                    fout <<"scanner_quit."<<std::endl;
+                    fout.close();
+
                     emit quit_();
                     QTimer *timer = new QTimer(this);
                         connect(timer, SIGNAL(timeout()), this, SLOT(q()));

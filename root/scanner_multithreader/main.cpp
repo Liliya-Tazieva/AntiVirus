@@ -4,6 +4,7 @@
 #include <iostream>
 #include <QDebug>
 #include <QProcess>
+#include <QTextCodec>
 #include "traverser.h"
 /*
     std::ofstream fout;
@@ -33,6 +34,8 @@ int main(int argc, char *argv[])
     MainWindow w;
     a.connect(&w, SIGNAL(quit_()), &a, SLOT(quit()));
 
+
+
     Traverser *traverser=new Traverser();
     a.connect(traverser, SIGNAL(listReady()),&w,SLOT(handleResults()));
     a.connect(&w,SIGNAL(giveList()),traverser, SLOT(giveMore()));
@@ -51,10 +54,17 @@ int main(int argc, char *argv[])
          fout <<argv[2];
          fout <<" scanning algorithm."<<std::endl;
          fout <<"Scan started at: ";
-         fout <<argv[1]<<std::endl;
+         std::string stds=std::string(argv[1]);
+         fout <<stds<<std::endl;
+
+          QTextCodec *codec = QTextCodec::codecForName("UTF8");
+
+          QByteArray ba(stds.c_str());                  // Convert to QByteArray
+          QString msg = codec->toUnicode(ba);          // Qt magic !!!
 
 
-         traverser->initTraversing(argv[1],&w);
+         traverser->initTraversing(QString::fromLocal8Bit(argv[1]),&w);
+
          traverser->giveMore();
 
         // if(w.filesToScan.isEmpty())
@@ -62,7 +72,7 @@ int main(int argc, char *argv[])
 
          //w.handleResults();
 
-         fout <<"scanner_quit."<<std::endl;
+
 
          fout.close();
 
@@ -76,13 +86,20 @@ int main(int argc, char *argv[])
         fout <<"scanner_quit."<<std::endl;
 
         fout.close();
-/*
-        w.scantype="hex";
 
+        qDebug()<<"argc<3";
+
+        QTimer *timer = new QTimer();
+            a.connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
+            timer->start(300);
+/*
+        w.scantype="md5";
+
+        const char* a="C:\\testhex\\рус";
 
         w.activate();
 
-        traverser->initTraversing("C:\\Qt\\Qt5.5.10\\5.5\\msvc2013\\include\\QtCore\\5.5.1\\QtCore",&w);
+        traverser->initTraversing(a,&w);
         traverser->giveMore();
 
 

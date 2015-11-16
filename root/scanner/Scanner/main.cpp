@@ -75,7 +75,7 @@ public:
     does signature search on a given file
 
     */
-    virtual void scan(std::string s)=0;
+    virtual void scan(QString s0)=0;
 
     /*
     Traverses the given directory and all the subdirectories
@@ -85,17 +85,17 @@ public:
     void traverseForScanning(const char* s){
 
 
-        std::stack<std::string, std::list<std::string>> stack;
-        std::string st = s;
+        std::stack< QString, std::list<QString>> stack;
+        QString st = QString::fromLocal8Bit(s);
         stack.push(st);
         while (stack.size() != 0){
-            std::string st = stack.top();
+            QString st = stack.top();
             logger->writeToLog("Scanning directory: ");
-            logger->writelnToLog(st);
+            logger->writelnToLog(st.toStdString());
             stack.pop();
-            QDir start(st.c_str());
+            QDir start(st);
             start.setNameFilters(QStringList() << "*");
-            std::string currentString;
+            QString currentString;
             if (!start.exists())
             {
                logger->writelnToLog("error");
@@ -106,7 +106,7 @@ public:
                 if (dir_list.at(i) != "."&&dir_list.at(i) != ".."){
                     currentString = st;
                     currentString.append("\\");
-                    currentString.append(dir_list.at(i).toStdString());
+                    currentString.append(dir_list.at(i));
                     stack.push(currentString);
                 }
             }
@@ -115,7 +115,7 @@ public:
             for (int i = 0; i < file_list.size(); ++i){
                 currentString = st;
                 currentString.append("/");
-                currentString.append(file_list.at(i).toStdString());
+                currentString.append(file_list.at(i));
                 scan(currentString);
             }
 
@@ -126,10 +126,10 @@ public:
     };
 
 
-    void callVirusFoundWindow(std::string adress, std::string name) {
+    void callVirusFoundWindow(QString adress, std::string name) {
         QProcess *process = new QProcess();
         QString program = "WhatToDoWithVirus.exe";
-        QString arg1 = QString::fromStdString(adress);
+        QString arg1 = adress;
         QString arg2 = QString::fromStdString(name);
         process->start(program, QStringList() << arg1<<arg2);
 
@@ -202,11 +202,11 @@ public:
     does signature search on a given file
 
     */
-    virtual void scan(std::string s){
+    virtual void scan(QString s0){
 
         //logger->writeToLog("Scanning:  ");
         //logger->writelnToLog(s);
-
+        std::string s=s0.toStdString();
         std::ifstream::pos_type size;
             char * memblock;
             Logger*logger=new Logger();
@@ -271,7 +271,7 @@ public:
                         logger->writelnToLog(s);
                         logger->writeToLog("the name of virus is: ");
                         logger->writelnToLog(namebase[i]);
-                        callVirusFoundWindow(s,namebase[i]);
+                        callVirusFoundWindow(s0,namebase[i]);
                     }
 
 
@@ -355,12 +355,12 @@ public:
     does signature search on a given file
 
     */
-    virtual void scan(std::string s){
+    virtual void scan(QString s){
 
         //logger->writeToLog("Scanning:  ");
         //logger->writelnToLog(s);
 
-        QString fileName= QString::fromStdString(s);
+        QString fileName= s;
         QCryptographicHash crypto(QCryptographicHash::Md5);
         QFile file(fileName);
         file.open(QFile::ReadOnly);
@@ -383,7 +383,7 @@ public:
                     if(containsAt0){
                         qDebug()<<"Virus found!";
                         logger->writeToLog("suspicious file found at: ");
-                        logger->writelnToLog(s);
+                        logger->writelnToLog(s.toStdString());
                         logger->writeToLog("the name of virus is: ");
                         logger->writelnToLog(namebase[i]);
                         logger->writeToLog("the md5 hash of virus is: ");
