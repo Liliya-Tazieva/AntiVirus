@@ -48,26 +48,22 @@ ask_window::ask_window(QWidget *parent) : QWidget(parent)
 
 }
 
+/*
+    makes invoke() function to fire every 5 secs
+*/
+
 void ask_window::activate()
 {
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(invoke()));
     timer->start(5000);
 
-/*
 
-    Worker *worker = new Worker;
-    worker->moveToThread(&workerThread);
-    connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &MainWindow::operate, worker, &Worker::doWork);
-    connect(worker, &Worker::resultReady, this, &MainWindow::handleResults);
-    workerThread.start();
-    QString ssf="f";
-    emit operate(ssf);
-     emit operate(ssf);
-     emit operate(ssf);*/
 }
 
+/*
+    registry window has various modes, but in all modes "yes" means accept changes and "no" means undoing them
+*/
 
 void ask_window::yes()
 {
@@ -76,52 +72,15 @@ void ask_window::yes()
     }
     if(mode=="hosts_changed"){
 
-
-
-
         QString s=QDir::rootPath();
             s.append("Windows\\System32\\drivers\\etc\\hosts");
 
-        std::ifstream::pos_type size;
-        char * memblock;
-        std::ifstream file (s.toStdString(), std::ios::in|std::ios::binary|std::ios::ate);
-        if (file.is_open()){
-            size = file.tellg();
-            memblock = new char [size];
-            file.seekg (0, std::ios::beg);
-            file.read (memblock, size);
-            file.close();
-            //
-         }
-        else {
-            qDebug()<<"NOT FOUND";
 
-        }
-
-         std::ofstream fout;
-         fout.open(QApplication::applicationDirPath().append("\\hosts.txt").toStdString());
-         fout <<memblock<< std::endl;
-         fout.close();
-
-        delete[] memblock;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        qDebug()<<"doing nothing.";
-
+            QFile f(s);
+            if (!f.open(QFile::ReadOnly | QFile::Text)) return;
+            QTextStream in(&f);
+            hosts= in.readAll();
+            f.close();
 
     }
      this->hide();

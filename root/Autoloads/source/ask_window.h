@@ -17,32 +17,12 @@
 #include <QFileSystemWatcher>
 
 
-/*
-#include <QThread>
-
-class Worker : public QObject
-{
-    Q_OBJECT
-
-public slots:
-    void doWork(const QString &parameter) {
-        QString result;
-        qDebug()<<"hello";
-        std::ofstream fout; fout.open("log_rtp1.txt", std::ios::app); fout <<"ping"<< std::endl;         fout.close();
-        emit resultReady(result);
-    }
-
-signals:
-    void resultReady(const QString &result);
-};
-*/
 
 class ask_window : public QWidget
 {
     Q_OBJECT
 public:
     QVector<QList<RegistryParameter>> c_r;
-   /* QThread workerThread;*/
     explicit ask_window(QWidget *parent = 0);
     QTimer *timer;
     QLabel *situation;
@@ -56,6 +36,7 @@ public:
     QString s1;
     QString s2;
     QString mode;
+    QString hosts;
 
     QFileSystemWatcher *mon_hosts;
 
@@ -95,10 +76,6 @@ public slots:
             qDebug()<<"hosts_changed";
 
     };
-   /* void handleResults(const QString &);
-signals:
-    void operate(const QString &);*/
-
 };
 
 #endif // ASK_WINDOW_H

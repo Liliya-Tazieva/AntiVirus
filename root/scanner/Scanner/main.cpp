@@ -19,8 +19,6 @@ for each module it must have a separate log file.
 NOT WORKING AS STATED. MUST REFACTOR SO IT WILL WORK AS IS SAID BELOW
 and so it will take all 3 string types in printing function
 
-
-
 When programm starts, it creates output file stream once and you can write with writeToLog() function
 */
 
@@ -71,16 +69,15 @@ public:
 
     /*
     Scan is a function that can be applied to FILES ONLY.	directories' analog of scan is traverseForScanning function
-
     does signature search on a given file
-
+    if finds something, then it opens whattodowithvirus.exe window, if not, does nothing
+    requires the database to be loaded before to work correctly
     */
     virtual void scan(QString s0)=0;
 
     /*
     Traverses the given directory and all the subdirectories
     and applies scan() to all files that a found.
-
     */
     void traverseForScanning(const char* s){
 
@@ -101,7 +98,6 @@ public:
                logger->writelnToLog("error");
             }
             QStringList  dir_list = start.entryList(QDir::AllDirs);
-            //qDebug()<<dir_list;
             for (int i = 0; i < dir_list.size(); ++i){
                 if (dir_list.at(i) != "."&&dir_list.at(i) != ".."){
                     currentString = st;
@@ -110,6 +106,13 @@ public:
                     stack.push(currentString);
                 }
             }
+
+            QStringList filters;
+              filters << "*.exe" << "*.dll" << "*.cpt"<< "*.jpg"<< "*.jpeg"
+                      << "*.dbf"<< "*.iso"<< "*.tga"<< "*.bat"<< "*cil"<<"*.js"<<"*.gif"<<"*.bmp"<<"*.html"
+                      <<"*.htm"<<"*.ax"<<"*.cpl"<<"*.acm"<<"*.drv"<<"*.efi"<<"*.mui"<<"*.ocx"<<"*.scr"<<"*.sys"<<"*.tsp"
+                       << "*.doc"<< "*.docx"<< "*.xls"<< "*.xlsx"<< "*ppt"<<"*.pptx"<<"*.odt"<<"*.ods"<<"*.odp" ;
+            start.setNameFilters(filters);
 
             QStringList file_list = start.entryList(QDir::Files);
             for (int i = 0; i < file_list.size(); ++i){
@@ -134,9 +137,6 @@ public:
         process->start(program, QStringList() << arg1<<arg2);
 
     }
-
-
-
 
 };
 
@@ -198,14 +198,11 @@ public:
 
     /*
     Scan is a function that can be applied to FILES ONLY.	directories' analog of scan is traverseForScanning function
-
     does signature search on a given file
-
+    if finds something, then it opens whattodowithvirus.exe window, if not, does nothing
+    requires the database to be loaded before to work correctly
     */
     virtual void scan(QString s0){
-
-        //logger->writeToLog("Scanning:  ");
-        //logger->writelnToLog(s);
         std::string s=s0.toStdString();
         std::ifstream::pos_type size;
             char * memblock;
@@ -245,8 +242,7 @@ public:
                                k++;
 
                             }
-            buf2[size*2]=0;
-
+                             buf2[size*2]=0;
 
 
                              long l=size*2;
@@ -273,30 +269,10 @@ public:
                         logger->writelnToLog(namebase[i]);
                         callVirusFoundWindow(s0,namebase[i]);
                     }
-
-
-
-
-                    /*if (buf2.find(database[i]) != std::string::npos) {
-                         qDebug()<<"Virus found!";
-                         logger->writeToLog("suspicious file found at: ");
-                         logger->writelnToLog(s);
-                         logger->writeToLog("the name of virus is: ");
-                         logger->writelnToLog(namebase[i]);
-                         callVirusFoundWindow();
-                    }*/
-                   // qDebug()<<"------";
-                   // qDebug()<<QString::fromStdString(database[i]);
-                   // qDebug()<<QString::fromStdString(buf2).left(220);
                 }
-
-
-
-
     }
-
-
 };
+
 
 class Scanner_md5:public Scanner{
 public:
@@ -336,8 +312,6 @@ public:
                     if(data.at(i)!='\r')
                      str+=data.at(i);
                 }else{
-                    // qDebug() <<  str;
-                    // long symbolPos=str.indexOf('=');
                      namebase[niterator]="virus";
                      database[niterator]=str.toStdString();
                      str="";
@@ -351,15 +325,11 @@ public:
 
     /*
     Scan is a function that can be applied to FILES ONLY.	directories' analog of scan is traverseForScanning function
-
-    does signature search on a given file
-
+    does signature search on a given file 
+    if finds something, then it opens whattodowithvirus.exe window, if not, does nothing
+    requires the database to be loaded before to work correctly
     */
     virtual void scan(QString s){
-
-        //logger->writeToLog("Scanning:  ");
-        //logger->writelnToLog(s);
-
         QString fileName= s;
         QCryptographicHash crypto(QCryptographicHash::Md5);
         QFile file(fileName);
@@ -368,9 +338,6 @@ public:
           crypto.addData(file.read(8192));
         }
         QByteArray buf2 = crypto.result().toHex();
-       // for(int i=0;i<hash.length();i++)
-        //logger->writelnToLog(buf2);
-
                 for(long i=0;i<databaseLength;i++){
                     bool containsAt0=true;
                     long elementLength=database[i].length();
@@ -392,13 +359,7 @@ public:
                         callVirusFoundWindow(s,gg.toStdString());
                     }
                 }
-
-
-
-
     }
-
-
 };
 
 
@@ -407,19 +368,12 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     if(argc>=3){
         Scanner* scanner;
-        //std::string s = QSysInfo::prettyProductName().toStdString();
-        //if (s == "Windows 8" || s == "Windows 8.1"){
-        //    scanner =new Scanner8();
-        //}
-        //else if (s == "Windows 10"){
-        //    scanner =new Scanner10();
-        //}
         if (strcmp(argv[2],"hex")==0){
             scanner=new Scanner_hex();
         }else if (strcmp(argv[2],"md5")==0)
             scanner=new Scanner_md5();
         scanner->logger->writeToLog(argv[2]);
-        scanner->logger->writelnToLog(" scanning algorithm.");
+        scanner->logger->writelnToLog(" scanning algorithm, scanner is in mono-thread mode");
         scanner->logger->writeToLog("Scan started at: ");
         scanner->logger->writelnToLog(argv[1]);
         scanner->traverseForScanning(argv[1]);
