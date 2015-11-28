@@ -5,16 +5,16 @@ PM defender is a project that is being made by 2nd year students of Saint-Peters
 Faculty: Applied Mathematics and  Control Processes.
 
 ###Used libraries and frameworks:
-Right now we are using PE-bliss for reading headers of PE-files and Qt.
+Right now we are using **PE-bliss** for reading headers of PE-files and **Qt**.
 
 ###Navigation:
-1)antivirus_src is a folder with the source files of all the modules. For each logical part of the antivirus we use separate Qt projects, they are fairly small and easy to work with, and it also helps to make the things work asynchronously.
+1)**antivirus_src** is a folder with the source files of all the modules. For each logical part of the antivirus we use separate Qt projects, they are fairly small and easy to work with, and it also helps to make the things work asynchronously.
 
-2)dequarantinner_src is a folder that is storing the dequarantinner program. It is located apart from the other code because it is a separate program, which should be run independently when you need it.
+2)**dequarantinner_src** is a folder that is storing the dequarantinner program. It is located apart from the other code because it is a separate program, which should be run independently when you need it.
 
-3)deployment_files stores files needed for building and deployment, see "Building"
+3)**deployment_files** stores files needed for building and deployment, see "Building"
 
-4)test_data contains things that you can use for testing. There are a folder with files containing Eicar-test-signature and a code that is playing a role of a virus attacking the "hosts" file.
+4)**test_data** contains things that you can use for testing. There are a folder with files containing Eicar-test-signature and a code that is playing a role of a virus attacking the "hosts" file.
 
 ###Building:
 For building PM Defender you will need qt creator, source codes and the contents of "deployment_files" folder. 
@@ -28,5 +28,5 @@ For using instructions just click "know more" link in the main window of the ins
 
 ###License:
 
-The code is distributed under GNU lesser general public license.
+The code is distributed under **GNU lesser general public license**.
 
