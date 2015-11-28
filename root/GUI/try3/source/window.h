@@ -14,6 +14,7 @@
 #include "pmavmodules.h"
 #include <QProcess>
 #include <QFileDialog>
+#include <QDialog>
 
 
 
@@ -45,6 +46,10 @@ public:
     QLabel *link;
     QPushButton *choose;
     QFileDialog *explorer;
+    QDialog *file_or_directory;
+    QLabel *what;
+    QPushButton *fi;
+    QPushButton *fo;
 
     //not using antivirus class anymore: Antivirus* antivirus;
 
@@ -54,13 +59,9 @@ public slots:
     void scan_dir();
     void pass_def();
     void link_clicked(QString);
-    void choosing_file()
-    {
-        explorer = new QFileDialog;
-        s = QFileDialog::getExistingDirectory(0, "Directory Dialog", "");
-        line->clear();
-        line->setText(s);
-    }
+    void choosing_file();
+    void explorer_creator1();
+    void explorer_creator2();
     void on_scanner_finished(int x0, QProcess::ExitStatus x1);
 
     void on_rtp_finished(int x0, QProcess::ExitStatus x1);

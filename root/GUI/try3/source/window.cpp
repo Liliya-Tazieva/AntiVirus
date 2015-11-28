@@ -23,7 +23,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
     link->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     link->setOpenExternalLinks(false);
 
-    //Everything for scaning perticular directory
+    //Everything for scaning particular directory
     ask_dir = new QLabel("You want to scan only one particular directory?");
     funny_joke = new QLabel("We have the solution specially for you!");
     ask_dir->setFont(font_kind4);
@@ -61,7 +61,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
     box1->addItem("High");
     box1->setFont(font_kind1);
     box1->setCurrentIndex(1);
-    box2->addItem("hex");
+    box2->addItem("md5+heuristic");
     box2->addItem("md5");
     box2->setFont(font_kind1);
     lb1->setBuddy(box1);
@@ -104,7 +104,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
     connect(scanall, SIGNAL(clicked()), this, SLOT(scan_all()), Qt::DirectConnection);
     connect(passive_def, SIGNAL(toggled(bool)), this, SLOT(pass_def()), Qt::DirectConnection);
     connect(link, SIGNAL(linkActivated(QString)), this, SLOT(link_clicked(QString)), Qt::DirectConnection);
-    connect(choose, SIGNAL(clicked(bool)), this, SLOT(choosing_file()), Qt::DirectConnection);
+    connect(choose, SIGNAL(clicked()), this, SLOT(choosing_file()), Qt::DirectConnection);
 }
 
 
@@ -117,7 +117,54 @@ void Window::link_clicked(QString html_adress)
     QDesktopServices::openUrl(fileurl);
 }
 
-void Window::on_scanner_finished(int x0, QProcess::ExitStatus x1){
+//Asking user what he wants to scan: file or directory
+void Window::choosing_file()
+{
+    file_or_directory = new QDialog;
+    QFont fk1("Calibri", 22);
+    QFont fk2("Calibri", 18);
+    what = new QLabel("What do you want to scan: file or folder?");
+    what->setFont(fk1);
+    fi=new QPushButton("&File");
+    fi->setFont(fk2);
+    fo=new QPushButton("&Folder");
+    fo->setFont(fk2);
+    connect(fi, SIGNAL(clicked()), this, SLOT(explorer_creator1()), Qt::DirectConnection);
+    connect(fi, SIGNAL(clicked()), file_or_directory, SLOT(accept()), Qt::DirectConnection);
+    connect(fo, SIGNAL(clicked()), this, SLOT(explorer_creator2()), Qt::DirectConnection);
+    connect(fo, SIGNAL(clicked()), file_or_directory, SLOT(reject()), Qt::DirectConnection);
+    QHBoxLayout *l1 = new QHBoxLayout;
+    l1->addWidget(fi);
+    l1->addWidget(fo);
+    QVBoxLayout *l2 = new QVBoxLayout;
+    l2->addWidget(what);
+    l2->addLayout(l1);
+    file_or_directory->setLayout(l2);
+    file_or_directory->setWindowTitle("Choose what to scan");
+    file_or_directory->exec();
+}
+
+//Creating explorer to choose file
+void Window::explorer_creator1()
+{
+    explorer = new QFileDialog;
+    s = explorer->getOpenFileName(this, "Choosing file", QDir::rootPath());
+    line->clear();
+    line->clear();
+    line->setText(s);
+}
+
+//Creating explorer to choose folder
+void Window::explorer_creator2()
+{
+    explorer = new QFileDialog;
+    s = explorer->getExistingDirectory(this, "Choosing folder", QDir::rootPath(),QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks);
+    line->clear();
+    line->setText(s);
+}
+
+void Window::on_scanner_finished(int x0, QProcess::ExitStatus x1)
+{
     scanall->setEnabled(true);
     scanall->repaint();
     scanit->setEnabled(true);
