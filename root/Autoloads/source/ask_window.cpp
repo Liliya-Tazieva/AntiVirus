@@ -1,6 +1,8 @@
 #include "ask_window.h"
 #include <QFont>
 #include <QDebug>
+#include <QDir>
+#include <QApplication>
 
 ask_window::ask_window(QWidget *parent) : QWidget(parent)
 {
@@ -46,31 +48,40 @@ ask_window::ask_window(QWidget *parent) : QWidget(parent)
 
 }
 
+/*
+    makes invoke() function to fire every 5 secs
+*/
+
 void ask_window::activate()
 {
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(invoke()));
     timer->start(5000);
 
-/*
 
-    Worker *worker = new Worker;
-    worker->moveToThread(&workerThread);
-    connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &MainWindow::operate, worker, &Worker::doWork);
-    connect(worker, &Worker::resultReady, this, &MainWindow::handleResults);
-    workerThread.start();
-    QString ssf="f";
-    emit operate(ssf);
-     emit operate(ssf);
-     emit operate(ssf);*/
 }
 
+/*
+    registry window has various modes, but in all modes "yes" means accept changes and "no" means undoing them
+*/
 
 void ask_window::yes()
 {
     if(mode=="registry_changed"){
         c_r[reserved_registry_parameter_changed_int].push_front(reserved_registry_parameter_changed);
+    }
+    if(mode=="hosts_changed"){
+
+        QString s=QDir::rootPath();
+            s.append("Windows\\System32\\drivers\\etc\\hosts");
+
+
+            QFile f(s);
+            if (!f.open(QFile::ReadOnly | QFile::Text)) return;
+            QTextStream in(&f);
+            hosts= in.readAll();
+            f.close();
+
     }
      this->hide();
 }
