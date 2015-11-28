@@ -1,7 +1,7 @@
 ##PM Defender
 ###Short description:
 
-PM defender is a project that is being made by 2nd year students of Saint-Petersburg State University. 
+**PM defender** is a project that is being made by 2nd year students of Saint-Petersburg State University. 
 Faculty: Applied Mathematics and  Control Processes.
 
 ###Used libraries and frameworks:
@@ -14,7 +14,7 @@ Right now we are using **PE-bliss** for reading headers of PE-files and **Qt**.
 
 3)**deployment_files** stores files needed for building and deployment, see "Building"
 
-4)**test_data** contains things that you can use for testing. There are a folder with files containing Eicar-test-signature and a code that is playing a role of a virus attacking the "hosts" file.
+4)**test_data** contains things that you can use for testing. There are folders with files containing Eicar-test-signature and some code that is playing a role of a virus attacking the "hosts" file.
 
 ###Building:
 For building PM Defender you will need qt creator, source codes and the contents of "deployment_files" folder. 
