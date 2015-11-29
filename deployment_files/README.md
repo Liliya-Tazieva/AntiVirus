@@ -1,4 +1,4 @@
-##deployment files folder \par
+##deployment_files folder
 It contains files which are needed for compilation, deploy and usage of our product. \par
 \par
 **Executables_folder** contains files that you need to put to the compiled .exe files, there are some necessary qt dlls/conf files, virus databases and the local html help file(it is called from GUI). \par
