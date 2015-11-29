@@ -90,7 +90,7 @@ public:
 
             //Проверим, есть ли импорты у файла
             if(!image.has_imports()){
-                return 0;
+                return -1;
             }
 
             //Получаем список импортируемых библиотек с функциями
@@ -137,35 +137,36 @@ public:
     bool scanHeuristic_c(QString s,QString& param1, std::string& param2){
 
         std::vector<char*> v;
-        mineHeader_c(s.toLocal8Bit().data(),v);
+        if(mineHeader_c(s.toLocal8Bit().data(),v)==0){
 
-        long dt=heuristicDatabase.length();
-        int lt=v.size();
-        long hitcounter=0;
-        for(int i=0;i<dt;i++){
-            int ccount=0;
-            int tt=heuristicDatabase[i].length();
+            long dt=heuristicDatabase.length();
+            int lt=v.size();
+            long hitcounter=0;
+            for(int i=0;i<dt;i++){
+                int ccount=0;
+                int tt=heuristicDatabase[i].length();
 
 
 
-            for(int ii=0;ii<tt;ii++){
-                if(heuristicDatabase[i][0][0]!=v[0][0])
-                    continue;
-                for(int iii=0;iii<lt;iii++){
-                    if(strcmp(heuristicDatabase[i][ii],v[iii])==0)
-                       ccount++;
+                for(int ii=0;ii<tt;ii++){
+                    if(heuristicDatabase[i][0][0]!=v[0][0])
+                        continue;
+                    for(int iii=0;iii<lt;iii++){
+                        if(strcmp(heuristicDatabase[i][ii],v[iii])==0)
+                           ccount++;
+                    }
+                }
+                if(ccount==tt){
+                      hitcounter++;
                 }
             }
-            if(ccount==tt){
-                  hitcounter++;
-            }
+           if(hitcounter>0){
+               param1=s;
+               param2=QString::number(hitcounter).toStdString();
+               return true;
+           }
         }
-       if(hitcounter>0){
-           param1=s;
-           param2=QString::number(hitcounter).toStdString();
-           return true;
-       }
-       return false;
+           return false;
 
     }
 
