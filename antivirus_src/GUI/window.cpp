@@ -8,8 +8,24 @@
 #include <string>
 #include <QCryptographicHash>
 #include <QNetworkAccessManager>
+#include <QCloseEvent>
 
+void Window::closeEvent(QCloseEvent *event)
+{
+    if(process_rtp!=nullptr)
+        if(process_rtp->state() == QProcess::Running)
+            try{
+                process_rtp->close();
+            }catch(std::exception e){};
+    if(process!=nullptr)
+        if(process->state() == QProcess::Running)
+            try{
+                process->close();
+            }catch(std::exception e){};
 
+    event->accept();
+
+}
 void Window::requestVersion(){
     QNetworkAccessManager *m = new QNetworkAccessManager(this);
     connect(m,SIGNAL(finished(QNetworkReply*)),this,SLOT(requestReceived(QNetworkReply*)));

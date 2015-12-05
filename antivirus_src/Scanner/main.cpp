@@ -183,8 +183,8 @@ public:
         stack.push(st);
         while (stack.size() != 0){
             QString st = stack.top();
-            //logger->writeToLog("Scanning directory: ");
-           // logger->writelnToLog(st.toStdString());
+            logger->writeToLog("Scanning directory: ");
+            logger->writelnToLog(st.toStdString());
             stack.pop();
             QDir start(st);
             start.setNameFilters(QStringList() << "*");
@@ -287,6 +287,9 @@ int main(int argc, char *argv[])
 
         if(argc>=4){
 
+            for(int i=0;i<strlen(argv[1]);i++)
+                if(argv[1][i]=='/')
+                    argv[1][i]='\\';
             bool ignoreUserChoice=false;
 
            //checking if it is one file

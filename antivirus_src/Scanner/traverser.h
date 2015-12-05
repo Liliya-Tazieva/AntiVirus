@@ -51,7 +51,6 @@ public slots:
                    fout <<"error"<< std::endl;
                 }
                 QStringList  dir_list = start.entryList(QDir::AllDirs);
-                //qDebug()<<dir_list;
                 for (int i = 0; i < dir_list.size(); ++i){
                     if (dir_list.at(i) != "."&&dir_list.at(i) != ".."){
                         currentString = st;

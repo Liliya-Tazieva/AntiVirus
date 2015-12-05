@@ -11,18 +11,20 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QLabel>
-#include "pmavmodules.h"
 #include <QProcess>
 #include <QFileDialog>
 #include <QDialog>
 #include <QNetworkReply>
-
+#include <QCloseEvent>
 
 
 
 class Window : public QWidget
 {
     Q_OBJECT
+
+protected:
+    void closeEvent(QCloseEvent *event);
 public:
     explicit Window(QWidget *parent = 0);
     //Initializing all parameters, that are used in window.cpp
@@ -38,8 +40,8 @@ public:
     QVBoxLayout *layout2;
     QHBoxLayout *layout3;
     QString s;
-    QProcess *process;
-    QProcess *process_rtp;
+    QProcess *process=nullptr;
+    QProcess *process_rtp=nullptr;
     QComboBox *box1;
     QComboBox *box2;
     QLabel *lb1;
@@ -51,6 +53,7 @@ public:
     QLabel *what;
     QPushButton *fi;
     QPushButton *fo;
+    bool closing=false;
 
     void disable_all();
     void requestVersion();

@@ -101,8 +101,6 @@ public:
                 const import_library& lib = *it; //Импортируемая библиотека
                 //Перечисляем импортированные функции для библиотеки
                 const import_library::imported_list& functions = lib.get_imported_functions();
-                //const std::string symbol="[+#@]"+lib.get_name();
-                //v.push_back((char*)symbol.c_str());
                 for(import_library::imported_list::const_iterator func_it = functions.begin(); func_it != functions.end(); ++func_it)
                 {
                     const imported_function& func = *func_it; //Импортированная функция
@@ -120,7 +118,7 @@ public:
             }
             return 0;
         }catch(std::exception e){
-            std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<"-"<< e.what();         fout.close();
+            std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<"-"<< e.what()<<std::endl;         fout.close();
             return -1;
         }
     }
@@ -161,6 +159,8 @@ public:
                 }
             }
            if(hitcounter>0){
+               std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<"found something"<<s.toStdString()<<std::endl;         fout.close();
+
                param1=s;
                param2=QString::number(hitcounter).toStdString();
                return true;
