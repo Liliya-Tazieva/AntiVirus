@@ -160,7 +160,7 @@ public:
                       hitcounter++;
                 }
             }
-           if(hitcounter>5){
+           if(hitcounter>0){
                std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<"found something"<<s.toStdString()<<std::endl;         fout.close();
 
                param1=s;
