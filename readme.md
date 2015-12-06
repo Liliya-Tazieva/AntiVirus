@@ -12,12 +12,11 @@ Right now we are using **PE-bliss** for reading headers of PE-files and **Qt**.
 
 2)**dequarantinner_src** is a folder that is storing the dequarantinner program. It is located apart from the other code because it is a separate program, which should be run independently when you need it.
 
-3)**deployment_files** stores files needed for building and deployment, see "Building"
-
-4)**test_data** contains things that you can use for testing. There are folders with files containing Eicar-test-signature and some code that is playing a role of a virus attacking the "hosts" file.
+3)**test_data** contains things that you can use for testing. There are folders with files containing Eicar-test-signature and some code that is playing a role of a virus attacking the "hosts" file.
 
 ###Building:
 For building PM Defender you will need qt creator, source codes and the contents of "deployment_files" folder. 
+You can get "deployment_files" here: http://pmpu-prject.ru/deployment_files.zip
 Build every project with qt creator(scanner must be only compiled with "release" mode, you will also need pe_bliss.lib file from "deployment_files" to compile it), put them all in one folder, also put there files that are situated in "executables_folder" from "deployment_files". 
 After all you just need inject manifest file from "deployment_files" and you are done.
  
