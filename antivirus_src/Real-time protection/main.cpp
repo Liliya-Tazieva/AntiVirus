@@ -164,6 +164,30 @@ void QueryKeyA_r(HKEY hKey,QList<RegistryParameter>* l2)
 
 void ask_window::no()
 {
+    if(mode=="autoruns_folder_changed"){
+        QStringList folders=QStringList();
+        QList<QStringList> folders_contents=QList<QStringList>();
+        getAutorunsFolders(folders,folders_contents);
+
+        for(int i=0;i<autoruns_folders_contents.length();i++)
+             for(int i0=0;i0<autoruns_folders_contents.at(i).length();i0++)
+               for(int ii0=0;ii0<folders_contents.at(i).length();ii0++)
+                 if(autoruns_folders_contents.at(i).at(i0)==folders_contents.at(i).at(ii0))
+                     folders_contents[i].removeAt(ii0);
+
+        for(int ii=0;ii<folders_contents.length();ii++)
+            if(folders_contents[ii].length()>0)
+                for(int i=0;i<folders_contents[ii].length();i++){
+                    QString xname=folders[ii]+'/'+folders_contents[ii][i];
+                    QFile x(xname);
+                    if(x.exists())x.remove();
+                }
+
+        getAutorunsFolders(autoruns_folders,autoruns_folders_contents);
+        qDebug()<<autoruns_folders_contents;
+
+    }
+
     if(mode=="hosts_changed"){
 
 
@@ -413,7 +437,28 @@ void ask_window::invoke(){
         }
 };
 
+void ask_window::getAutorunsFolders(QStringList& autoruns_folders,QList<QStringList>& autoruns_folders_contents){
+    autoruns_folders_contents=QList<QStringList>();
 
+    autoruns_folders=QStringList();
+    QString root=QDir::rootPath();
+
+    QDir users(root+"Users");
+    users.setNameFilters(QStringList() << "*");
+    QStringList  users_list = users.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+    autoruns_folders.push_back(root+"ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp");
+    for(int j=0;j<users_list.length();j++)
+     autoruns_folders.push_back(root+"Users\\"+users_list.at(j)+"\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup");
+
+    for(int i=0;i<autoruns_folders.length();i++){
+        QDir start(autoruns_folders.at(i));
+        start.setNameFilters(QStringList() << "*.lnk");
+        QStringList  dir_list = start.entryList(QDir::Files | QDir::Hidden | QDir::System);
+        autoruns_folders_contents.push_back(dir_list);
+        mon_autoruns->addPath(autoruns_folders.at(i));
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -444,6 +489,12 @@ int main(int argc, char *argv[])
 
     a.connect( w.mon_hosts, SIGNAL(fileChanged(QString)), &w, SLOT(foo1(QString)));
 
+    w.mon_autoruns = new QFileSystemWatcher;
+
+    w.getAutorunsFolders(w.autoruns_folders,w.autoruns_folders_contents);
+    qDebug()<<w.autoruns_folders_contents;
+
+    a.connect(w.mon_autoruns, SIGNAL(directoryChanged(QString)), &w, SLOT(foo2(QString)));
 
     return a.exec();
 }

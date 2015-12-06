@@ -67,6 +67,11 @@ void ask_window::activate()
 
 void ask_window::yes()
 {
+    if(mode=="autoruns_folder_changed"){
+        getAutorunsFolders(autoruns_folders,autoruns_folders_contents);
+        qDebug()<<autoruns_folders_contents;
+    }
+
     if(mode=="registry_changed"){
         c_r[reserved_registry_parameter_changed_int].push_front(reserved_registry_parameter_changed);
     }

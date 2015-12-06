@@ -36,10 +36,11 @@ public:
                             str="";
                         }else{
                              if(! ( (str=="}{") || (str=="}") )   ){    //then its just a normal string
-                                 if(str!=""){
-                                     int len=str.length();
+                                 if((str!="")&&(libname!="")){
+                                     QString entry=libname+" "+str;
+                                     int len=entry.length();
                                      char* str_c=new char[len];
-                                     strncpy(str_c,(str).toStdString().c_str(),len);
+                                     strncpy(str_c,entry.toStdString().c_str(),len);
                                      str_c[len-1]=0;
                                      n.append(str_c);
                                  }
@@ -107,7 +108,7 @@ public:
                     if(func.has_name()) //Если функция имеет имя - выведем его
                     {
                         std::string ot=lib.get_name()+' '+func.get_name();
-                        int len=func.get_name().length();
+                        int len=ot.length();
                         char* str_c=new char[len];
                         strncpy(str_c,ot.c_str(),len);
                         str_c[len-1]=0;
@@ -147,18 +148,19 @@ public:
 
 
                 for(int ii=0;ii<tt;ii++){
-                    if(heuristicDatabase[i][0][0]!=v[0][0])
-                        continue;
+
                     for(int iii=0;iii<lt;iii++){
+                        if(heuristicDatabase[i][ii][0]!=v[iii][0])
+                            continue;
                         if(strcmp(heuristicDatabase[i][ii],v[iii])==0)
                            ccount++;
                     }
                 }
-                if(ccount==tt){
+                if(ccount>=tt){
                       hitcounter++;
                 }
             }
-           if(hitcounter>0){
+           if(hitcounter>5){
                std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<"found something"<<s.toStdString()<<std::endl;         fout.close();
 
                param1=s;
