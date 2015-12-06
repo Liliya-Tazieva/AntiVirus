@@ -12,14 +12,14 @@ Right now we are using **PE-bliss** for reading headers of PE-files and **Qt**.
 
 2)**dequarantinner_src** is a folder that is storing the dequarantinner program. It is located apart from the other code because it is a separate program, which should be run independently when you need it.
 
-3)**test_data** contains things that you can use for testing. There are folders with files containing Eicar-test-signature and some code that is playing a role of a virus attacking the "hosts" file.
-
 There are also some usefull things outside Git.
 You will need:
 
 http://pmpu-prject.ru/deployment_files.zip    for building and running the project,
 
 http://pmpu-prject.ru/test_data.zip    for testing it.
+
+Both files have explanation readme's in them.
 
 ###Building:
 For building PM Defender you will need qt creator, source codes and the contents of "deployment_files" folder. 
