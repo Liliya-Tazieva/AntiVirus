@@ -6,6 +6,7 @@
 #include <pe_lib/pe_bliss.h>
 #ifdef PE_BLISS_WINDOWS
 #include "pe_lib/lib.h"
+#include <ctime>
 
 
 using namespace pe_bliss;
@@ -164,7 +165,11 @@ public:
                 }
             }
            if(hitcounter>0){
-               std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<"found something"<<s.toStdString()<<std::endl;         fout.close();
+               time_t t = time(0);   // get time now
+               struct tm * now = localtime( & t );
+               std::string time=std::to_string(now->tm_hour)+":"+std::to_string(now->tm_min)+":"+std::to_string(now->tm_sec)+" ";
+
+               std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<time+"Heuristic engine has found something"<<s.toStdString()<<std::endl;         fout.close();
 
                param1=s;
                param2=QString::number(hitcounter).toStdString();
