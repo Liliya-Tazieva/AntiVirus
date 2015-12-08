@@ -191,8 +191,8 @@ public:
         stack.push(st);
         while (stack.size() != 0){
             QString st = stack.top();
-            logger->writeToLog("Scanning directory: ");
-            logger->writelnToLog(st.toStdString());
+            //logger->writeToLog("Scanning directory: ");
+            //logger->writelnToLog(st.toStdString());
             stack.pop();
             QDir start(st);
             start.setNameFilters(QStringList() << "*");
