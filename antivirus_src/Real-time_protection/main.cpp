@@ -14,6 +14,7 @@
 #include <QDir>
 #include <QFile>
 #include <QStandardPaths>
+#include <ctime>
 
 using namespace std;
 
@@ -428,6 +429,20 @@ void ask_window::invoke(){
 
     for(int ii=0;ii<Difference_r.length();ii++)
         if(Difference_r.at(ii).length()!=0){
+
+
+
+
+
+
+            std::ofstream fout;
+            fout.open("log_real-time_protection.txt", std::ios::app);
+            time_t t = time(0);   // get time now
+            struct tm * now = localtime( & t );
+            fout <<now->tm_hour  << ":" <<now->tm_min  << ":" <<now->tm_sec<<"  ";
+            fout << "An attempt to change autoruns registries was noticed!";
+            fout.close();
+
             qDebug()<<_regToString(Difference_r.at(ii).at(0)); qDebug()<<"the difference it is,  open the window here we must";
             this->reserved_registry_parameter_changed_int=ii;
             this->reserved_registry_parameter_changed=Difference_r.at(ii).at(0);
@@ -464,6 +479,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     ask_window w;
+
+    std::ofstream fout;
+    fout.open("log_real-time_protection.txt");
+    time_t t = time(0);   // get time now
+    struct tm * now = localtime( & t );
+    fout <<now->tm_hour  << ":" <<now->tm_min  << ":" <<now->tm_sec<<"  ";
+    fout << "rtp_started"<<std::endl;
+    fout.close();
+
     for(int i=0;i<12;i++){
        QList<RegistryParameter> q=QList<RegistryParameter>();
        w.c_r.push_back(q);
