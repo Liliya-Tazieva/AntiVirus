@@ -169,7 +169,7 @@ public:
                struct tm * now = localtime( & t );
                std::string time=std::to_string(now->tm_hour)+":"+std::to_string(now->tm_min)+":"+std::to_string(now->tm_sec)+" ";
 
-               std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<time+"Heuristic engine has found something: "<<s.toStdString()<<std::endl;         fout.close();
+               std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<time+"Heuristic engine has found something"<<s.toStdString()<<std::endl;         fout.close();
 
                param1=s;
                param2=QString::number(hitcounter).toStdString();

@@ -38,8 +38,8 @@ public slots:
         fout.open("log_scanner.txt", std::ios::app);
             while (w->stack.size()!=0&&privateList.length()<100){
                 QString st =  w->stack.top();
-                //fout <<"Scanning directory: ";
-                //fout <<st.toStdString()<< std::endl;
+                fout <<"Scanning directory: ";
+                fout <<st.toStdString()<< std::endl;
 
                 qDebug()<<st;
                  w->stack.pop();
