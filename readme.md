@@ -22,12 +22,13 @@ http://pmpu-prject.ru/test_data.zip    for testing it.
 Both files have explanation readme's in them.
 
 ###Building:
-For building PM Defender you will need qt creator, source codes and the contents of "deployment_files" folder. 
+For building PM Defender you will need qt creator, Visual Studio 2013 or higher, source codes and the contents of "deployment_files" folder. 
 You can get "deployment_files" here: 
 
 http://pmpu-prject.ru/deployment_files.zip
 
-Build every project with qt creator(scanner must be only compiled with "release" mode, you will also need pe_bliss.lib file from "deployment_files" to compile it), put them all in one folder, also put there files that are situated in "executables_folder" from "deployment_files". 
+Build Logger with Visual Studio. You need to download ConsoleApplication1.sln file and ipch folder from "deployment_files" put both in the folder, which will be parent folder for Logger source code files. Call source code folder "ConsoleApplication1" and Logger will be built.
+Build each another project with qt creator(scanner must be only compiled with "release" mode, you will also need pe_bliss.lib file from "deployment_files" to compile it), put them all in one folder, also put there files that are situated in "executables_folder" from "deployment_files". 
 After all you just need inject manifest file from "deployment_files" and you are done.
  
 
