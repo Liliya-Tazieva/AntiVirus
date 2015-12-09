@@ -164,7 +164,7 @@ public:
                     }
                     if(containsAt0){
                         qDebug()<<"Virus found!";
-                        logger->writeToLog(get_time()+"suspicious file found at: ");
+                        logger->writeToLog("suspicious file found at: ");
                         logger->writelnToLog(s.toStdString());
                         logger->writeToLog("the name of virus is: ");
                         logger->writelnToLog(namebase[i]);

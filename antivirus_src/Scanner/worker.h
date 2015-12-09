@@ -58,14 +58,9 @@ public:
                     if(containsAt0){
                         qDebug()<<"Virus found!";
 
-                            time_t t = time(0);   // get time now
-                            struct tm * now = localtime( & t );
-                            std::string time=std::to_string(now->tm_hour)+":"+std::to_string(now->tm_min)+":"+std::to_string(now->tm_sec)+" ";
-
-
                             std::ofstream fout;
                             fout.open("log_scanner.txt", std::ios::app);
-                            fout << time+"suspicious file found at: ";
+                            fout << "suspicious file found at: ";
                             fout <<s<< std::endl;
                             fout << "the name of virus is: ";
                             fout <<'#'<<i<< std::endl;
