@@ -40,6 +40,7 @@ public:
     QVBoxLayout *layout2;
     QHBoxLayout *layout3;
     QString s;
+    QProcess *log_process=nullptr;
     QProcess *process=nullptr;
     QProcess *process_rtp=nullptr;
     QComboBox *box1;

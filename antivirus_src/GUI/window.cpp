@@ -22,6 +22,11 @@ void Window::closeEvent(QCloseEvent *event)
             try{
                 process->close();
             }catch(std::exception e){};
+    //logging
+    log_process = new QProcess();
+    QString program = "Logger.exe";
+    QString msg = "GUI closed";
+    log_process->start(program, QStringList() << msg);
 
     event->accept();
 
@@ -149,6 +154,11 @@ Window::Window(QWidget *parent) : QWidget(parent)
 //open instrucion for installing in browser(html-file)
 void Window::link_clicked(QString html_adress)
 {
+    //logging
+    log_process = new QProcess();
+    QString program = "Logger.exe";
+    QString msg = "Link clicked";
+    log_process->start(program, QStringList() << msg);
     //create local URL from the path to file
     QUrl fileurl = QUrl::fromUserInput(html_adress);
     //open the file
@@ -203,6 +213,12 @@ void Window::explorer_creator2()
 
 void Window::on_scanner_finished(int x0, QProcess::ExitStatus x1)
 {
+    //logging
+    log_process = new QProcess();
+    QString program = "Logger.exe";
+    QString msg = "Scanning finished";
+    log_process->start(program, QStringList() << msg);
+
     scanall->setEnabled(true);    scanall->repaint();
     scanit->setEnabled(true);     scanit->repaint();
     line->setText("");
@@ -239,11 +255,17 @@ void Window::scan_dir()
 
      QString arg2= box2->currentText();
 
+     //logging
+     log_process = new QProcess();
+     QString program = "Logger.exe";
+     QString msg = "Scanning directory started";
+     log_process->start(program, QStringList() << msg);
+
      process = new QProcess();
 
      connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(on_scanner_finished(int,QProcess::ExitStatus)));
 
-     QString program= "Scanner.exe";
+     program= "Scanner.exe";
 
      process->start(program, QStringList() << s<<arg2<<box1->currentText());
 
@@ -257,6 +279,11 @@ void Window::scan_all()//actually, not all. just a root path.
 
     disable_all();
 
+    //logging
+    log_process = new QProcess();
+    QString program = "Logger.exe";
+    QString msg = "Scanning root started";
+    log_process->start(program, QStringList() << msg);
 
     s=QDir::rootPath();
     QString f="Windows";
@@ -271,7 +298,7 @@ void Window::scan_all()//actually, not all. just a root path.
     process = new QProcess();
 
     connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(on_scanner_finished(int,QProcess::ExitStatus)));
-    QString program= "Scanner.exe";
+    program= "Scanner.exe";
 
     process->start(program, QStringList() << s<<arg2<<box1->currentText());
 
@@ -279,6 +306,11 @@ void Window::scan_all()//actually, not all. just a root path.
 }
 
 void Window::on_rtp_finished(int x0, QProcess::ExitStatus x1){
+    //logging
+    log_process = new QProcess();
+    QString program = "Logger.exe";
+    QString msg = "Real-time protection is deactivated";
+    log_process->start(program, QStringList() << msg);
     passive_def->setChecked(false);
     QLabel *indicator3 = new QLabel("Real-time protection is deactivated");
     QFont FontKind3("Calibri",36);
@@ -296,9 +328,14 @@ void Window::pass_def()
 
     if(passive_def->isChecked())
     {
+        //logging
+        log_process = new QProcess();
+        QString program = "Logger.exe";
+        QString msg = "Real-time protection is activated";
+        log_process->start(program, QStringList() << msg);
         process_rtp = new QProcess();
         connect(process_rtp, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(on_rtp_finished(int,QProcess::ExitStatus)));
-        QString program = "rtp_new.exe";
+        program = "rtp_new.exe";
 
         process_rtp->start(program, QStringList());
         QLabel *indicator3 = new QLabel("Real-time protection is activated");

@@ -25,6 +25,11 @@ int main(int argc, char *argv[])
     //Creating main GUI window
     //action is happening somewhere else
     Window w;
+    //logging
+    w.log_process = new QProcess();
+    QString program = "Logger.exe";
+    QString msg = "GUI started";
+    w.log_process->start(program, QStringList() << msg);
 
 
     //Just checking if updates are available
