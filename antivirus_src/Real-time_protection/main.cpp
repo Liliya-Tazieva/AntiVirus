@@ -440,7 +440,7 @@ void ask_window::invoke(){
             time_t t = time(0);   // get time now
             struct tm * now = localtime( & t );
             fout <<now->tm_hour  << ":" <<now->tm_min  << ":" <<now->tm_sec<<"  ";
-            fout << "An attempt to change autoruns registries was noticed!";
+            fout << "An attempt to change autoruns registries was noticed!"<<std::endl;
             fout.close();
 
             qDebug()<<_regToString(Difference_r.at(ii).at(0)); qDebug()<<"the difference it is,  open the window here we must";

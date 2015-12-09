@@ -87,7 +87,7 @@ public slots:
             time_t t = time(0);   // get time now
             struct tm * now = localtime( & t );
             fout <<now->tm_hour  << ":" <<now->tm_min  << ":" <<now->tm_sec<<"  ";
-            fout << "An attempt to change hosts file was noticed!";
+            fout << "An attempt to change hosts file was noticed!"<<std::endl;
             fout.close();
 
             set_window(QString("hosts_changed"),QString(""));
@@ -117,7 +117,7 @@ public slots:
             time_t t = time(0);   // get time now
             struct tm * now = localtime( & t );
             fout <<now->tm_hour  << ":" <<now->tm_min  << ":" <<now->tm_sec<<"  ";
-            fout << "An attempt to change autoruns folders was noticed!";
+            fout << "An attempt to change autoruns folders was noticed!"<<std::endl;
             fout.close();
 
             qDebug()<<folders_contents;
