@@ -9,7 +9,6 @@
 #include "emitter.h"
 #include "worker.h"
 #include <QTimer>
-#include <ctime>
 
 namespace Ui {
 class MainWindow;
@@ -133,13 +132,9 @@ public slots:
                 if(!work){
                     qDebug()<<"exit";
 
-                    time_t t = time(0);   // get time now
-                    struct tm * now = localtime( & t );
-                    std::string time=std::to_string(now->tm_hour)+":"+std::to_string(now->tm_min)+":"+std::to_string(now->tm_sec)+" ";
-
                     std::ofstream fout;
                     fout.open("log_scanner.txt", std::ios::app);
-                    fout <<time+"scanner_quit."<<std::endl;
+                    fout <<"scanner_quit."<<std::endl;
                     fout.close();
 
                     emit quit_();

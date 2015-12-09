@@ -15,7 +15,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFileSystemWatcher>
-#include <ctime>
+
 
 
 class ask_window : public QWidget
@@ -81,15 +81,6 @@ public slots:
     void no();
     void foo1(QString){
 
-
-            std::ofstream fout;
-            fout.open("log_real-time_protection.txt", std::ios::app);
-            time_t t = time(0);   // get time now
-            struct tm * now = localtime( & t );
-            fout <<now->tm_hour  << ":" <<now->tm_min  << ":" <<now->tm_sec<<"  ";
-            fout << "An attempt to change hosts file was noticed!";
-            fout.close();
-
             set_window(QString("hosts_changed"),QString(""));
             show();
             qDebug()<<"hosts_changed";
@@ -111,15 +102,7 @@ public slots:
             if(folders_contents[i].isEmpty())folders_contents.removeAt(i);
 
         if(folders_contents.length()>0){
-
-            std::ofstream fout;
-            fout.open("log_real-time_protection.txt", std::ios::app);
-            time_t t = time(0);   // get time now
-            struct tm * now = localtime( & t );
-            fout <<now->tm_hour  << ":" <<now->tm_min  << ":" <<now->tm_sec<<"  ";
-            fout << "An attempt to change autoruns folders was noticed!";
-            fout.close();
-
+            qDebug()<<9<<autoruns_folders_contents;
             qDebug()<<folders_contents;
             set_window(QString("autoruns_folder_changed"),QString(""));
             show();

@@ -14,7 +14,6 @@
 #include <QProcess>
 #include <QTextCodec>
 #include "traverser.h"
-#include <ctime>
 
 
 std::ofstream fout;
@@ -27,16 +26,9 @@ and so it will take all 3 string types in printing function
 
 When programm starts, it creates output file stream once and you can write with writeToLog() function
 */
-std::string get_time(){
 
-    time_t t = time(0);   // get time now
-    struct tm * now = localtime( & t );
-    std::string time=std::to_string(now->tm_hour)+":"+std::to_string(now->tm_min)+":"+std::to_string(now->tm_sec)+" ";
-    return time;
-}
 class Logger{
 public:
-
     void writeToLog(const char* s){
         std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout << s;                 fout.close();
     }
@@ -315,7 +307,7 @@ int main(int argc, char *argv[])
                scanner->logger->writelnToLog(" scanning algorithm.");
                scanner->logger->writeToLog("resource consumption: ");
                scanner->logger->writelnToLog(argv[3]);
-               scanner->logger->writeToLog(get_time()+"It is a file: ");
+               scanner->logger->writeToLog("It is a file: ");
                scanner->logger->writelnToLog(g.toStdString());
                QString param1="";
                std::string param2="";
@@ -327,7 +319,7 @@ int main(int argc, char *argv[])
                    if(virusFound)
                        scanner->callVirusFoundWindow("euristic",param1,param2);//not a misstape, "euristic" is okay
                }
-               scanner->logger->writelnToLog(get_time()+"scanner_quit.");
+               scanner->logger->writelnToLog("scanner_quit.");
                return 0;
            }else{
                //its not a single file, so we are checking if our user ade a proper choice
@@ -347,10 +339,10 @@ int main(int argc, char *argv[])
                 scanner->logger->writelnToLog(" scanning algorithm.");
                 scanner->logger->writeToLog("resource consumption: ");
                 scanner->logger->writelnToLog("Low");
-                scanner->logger->writeToLog(get_time()+"Scan started at: ");
+                scanner->logger->writeToLog("Scan started at: ");
                 scanner->logger->writelnToLog(argv[1]);
                 scanner->traverseForScanning(argv[1]);
-                scanner->logger->writelnToLog(get_time()+"scanner_quit.");
+                scanner->logger->writelnToLog("scanner_quit.");
                 return 0;
             }else{
                 a.connect(&w, SIGNAL(quit_()), &a, SLOT(quit()));
@@ -371,7 +363,7 @@ int main(int argc, char *argv[])
                  fout <<" scanning algorithm."<<std::endl;
                  fout<<"resource consumption: ";
                  fout<<argv[3]<<std::endl;
-                 fout <<get_time()+"Scan started at: ";
+                 fout <<"Scan started at: ";
                  std::string stds=std::string(argv[1]);
                  fout <<stds<<std::endl;
 
@@ -392,9 +384,8 @@ int main(int argc, char *argv[])
             }
         }else{
             Logger logger=Logger();
-            logger.writelnToLog(get_time()+"not enough arguments.");
-            logger.writelnToLog(get_time()+"scanner_quit.");
-
+            logger.writelnToLog("not enough arguments.");
+            logger.writelnToLog("scanner_quit.");
             return 0;
         }
 

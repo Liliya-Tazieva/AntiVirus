@@ -147,17 +147,14 @@ public:
 
 
 
-                for(int iii=0;iii<lt;iii++){                            //mined ones are fixed
-                     bool changed=false;
-                     for(int ii=0;ii<tt;ii++){                          //database ones are not
+                for(int ii=0;ii<tt;ii++){
+
+                    for(int iii=0;iii<lt;iii++){
                         if(heuristicDatabase[i][ii][0]!=v[iii][0])
                             continue;
-                        if(strcmp(heuristicDatabase[i][ii],v[iii])==0){//if they are equal then we have an entry
+                        if(strcmp(heuristicDatabase[i][ii],v[iii])==0)
                            ccount++;
-                           changed=true;
-                        }
-                     }
-                     if(!changed)break;                              //but if no entry, we stop checking this db block
+                    }
                 }
                 if(ccount>=tt){
                       hitcounter++;
