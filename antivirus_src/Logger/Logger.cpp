@@ -1,4 +1,4 @@
-// Logger_app.cpp: главный файл проекта.
+// Logger.cpp: main project file
 
 #include "stdafx.h"
 #include <tchar.h>
