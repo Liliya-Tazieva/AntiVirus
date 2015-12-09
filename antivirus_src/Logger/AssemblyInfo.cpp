@@ -11,11 +11,11 @@ using namespace System::Security::Permissions;
 // атрибутов. Отредактируйте значения этих атрибутов, чтобы изменить
 // общие сведения об этой сборке.
 //
-[assembly:AssemblyTitleAttribute(L"ConsoleApplication1")];
+[assembly:AssemblyTitleAttribute(L"Logger_app")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"ConsoleApplication1")];
+[assembly:AssemblyProductAttribute(L"Logger_app")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2015")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
