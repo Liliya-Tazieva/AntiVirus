@@ -27,7 +27,7 @@ You can get "deployment_files" here:
 
 http://pmpu-prject.ru/deployment_files.zip
 
-Build Logger with Visual Studio. You need to download ConsoleApplication1.sln file and ipch folder from "deployment_files" put both in the folder, which will be parent folder for Logger source code files. Call source code folder "ConsoleApplication1" and Logger will be built.
+Build Logger with Visual Studio. You need to download Logger.sln file and ipch folder from "deployment_files" put both in the folder, which will be parent folder for Logger source code files. Call source code folder "Logger" and Logger module will be built.
 
 Build each another project with qt creator(scanner must be only compiled with "release" mode, you will also need pe_bliss.lib file from "deployment_files" to compile it), put them all in one folder, also put there files that are situated in "executables_folder" from "deployment_files". 
 After all you just need inject manifest file from "deployment_files" and you are done.
