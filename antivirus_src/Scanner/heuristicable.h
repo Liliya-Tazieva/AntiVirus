@@ -6,6 +6,7 @@
 #include <pe_lib/pe_bliss.h>
 #ifdef PE_BLISS_WINDOWS
 #include "pe_lib/lib.h"
+#include <ctime>
 
 
 using namespace pe_bliss;
@@ -77,6 +78,26 @@ public:
     int mineHeader_c(char*a0,std::vector<char*> &v){
         v.clear();
 
+/*
+                int namelen=strlen(a0);
+                bool valid=false;
+                if(namelen>3){
+                    char c1=tolower(a0[namelen-1]);
+                    char c2=tolower(a0[namelen-2]);
+                    char c3=tolower(a0[namelen-3]);
+
+                    if ((c1=='e')&&(c2=='x')&&(c3=='e'))valid=true;
+                    if ((c1=='l')&&(c2=='l')&&(c3=='d'))valid=true;
+                    if ((c1=='x')&&(c2=='c')&&(c3=='o'))valid=true;
+                    if ((c1=='s')&&(c2=='y')&&(c3=='s'))valid=true;
+                    if ((c1=='r')&&(c2=='c')&&(c3=='s'))valid=true;
+                    if ((c1=='v')&&(c2=='r')&&(c3=='d'))valid=true;
+                    if ((c1=='l')&&(c2=='p')&&(c3=='c'))valid=true;
+                }
+
+                if(!valid)return -1;
+
+*/
         //Открываем файл
         std::ifstream pe_file(a0, std::ios::in | std::ios::binary);
         if(!pe_file)
@@ -147,21 +168,28 @@ public:
 
 
 
-                for(int ii=0;ii<tt;ii++){
-
-                    for(int iii=0;iii<lt;iii++){
+                for(int iii=0;iii<lt;iii++){                            //mined ones are fixed
+                     bool changed=false;
+                     for(int ii=0;ii<tt;ii++){                          //database ones are not
                         if(heuristicDatabase[i][ii][0]!=v[iii][0])
                             continue;
-                        if(strcmp(heuristicDatabase[i][ii],v[iii])==0)
+                        if(strcmp(heuristicDatabase[i][ii],v[iii])==0){//if they are equal then we have an entry
                            ccount++;
-                    }
+                           changed=true;
+                        }
+                     }
+                     if(!changed)break;                              //but if no entry, we stop checking this db block
                 }
                 if(ccount>=tt){
                       hitcounter++;
                 }
             }
            if(hitcounter>0){
-               std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<"found something"<<s.toStdString()<<std::endl;         fout.close();
+               time_t t = time(0);   // get time now
+               struct tm * now = localtime( & t );
+               std::string time=std::to_string(now->tm_hour)+":"+std::to_string(now->tm_min)+":"+std::to_string(now->tm_sec)+" ";
+
+               std::ofstream fout; fout.open("log_scanner.txt", std::ios::app); fout <<time+"Heuristic engine has found something: "<<s.toStdString()<<std::endl;         fout.close();
 
                param1=s;
                param2=QString::number(hitcounter).toStdString();
